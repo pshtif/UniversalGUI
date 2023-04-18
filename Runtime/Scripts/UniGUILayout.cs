@@ -171,7 +171,7 @@ namespace UniversalGUI
 #if UNITY_EDITOR
             UniGUIGenericMenuPopup.Show(menu, "", Event.current.mousePosition, 240, 300, false, false, true);
 #else
-            GenericMenuPopup.Show(menu, "", GUIUtility.GUIToScreenPoint(Event.current.mousePosition), 240, 300, false, false, true);
+            UniGUIGenericMenuPopup.Show(menu, "", GUIUtility.GUIToScreenPoint(Event.current.mousePosition), 240, 300, false, false, true);
 #endif
         }
         
@@ -246,7 +246,7 @@ namespace UniversalGUI
 #if UNITY_EDITOR
             UniGUIGenericMenuPopup.Show(menu, "", Event.current.mousePosition, 240, 300, false, false, true);
 #else
-            GenericMenuPopup.Show(menu, "", GUIUtility.GUIToScreenPoint(Event.current.mousePosition), 240, 300, false, false, true);
+            UniGUIGenericMenuPopup.Show(menu, "", GUIUtility.GUIToScreenPoint(Event.current.mousePosition), 240, 300, false, false, true);
 #endif
         }
 
