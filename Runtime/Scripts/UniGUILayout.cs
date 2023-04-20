@@ -130,6 +130,7 @@ namespace UniversalGUI
             if (thisId == UniGUI.currentShowingPopup && UniGUI.currentShowingPopupIndex >= 0)
             {
                 p_selectedIndex = UniGUI.currentShowingPopupIndex;
+                UniGUI.changed = true;
                 UniGUI.currentShowingPopup = -1;
                 UniGUI.currentShowingPopupIndex = -1;
             }
@@ -205,6 +206,7 @@ namespace UniversalGUI
             if (thisId == UniGUI.currentShowingPopup && UniGUI.currentShowingPopupIndex >= 0)
             {
                 p_value = (Enum)Enum.ToObject(p_value.GetType(), UniGUI.currentShowingPopupIndex);
+                UniGUI.changed = true;
                 UniGUI.currentShowingPopup = -1;
                 UniGUI.currentShowingPopupIndex = -1;
             }
@@ -226,7 +228,7 @@ namespace UniversalGUI
             {
                 GUILayout.EndHorizontal();
             }
-
+            
             return p_value;
 #endif
         }
@@ -240,7 +242,11 @@ namespace UniversalGUI
             foreach (int i in Enum.GetValues(p_value.GetType()))
             {
                 menu.AddItem(new GUIContent(Enum.GetName(p_value.GetType(), i)), i == index,
-                    () => { UniGUI.currentShowingPopupIndex = i; });
+                    () =>
+                    {
+                        Debug.Log(i+" : "+index);
+                        UniGUI.currentShowingPopupIndex = i;
+                    });
             }
             
 #if UNITY_EDITOR
