@@ -180,6 +180,11 @@ namespace UniversalGUI
         {
             return EnumPopup(GUIContent.none, p_value);
         }
+
+        public static Enum EnumPopup(string p_label, Enum p_value)
+        {
+            return EnumPopup(new GUIContent(p_label), p_value);
+        }
         
         public static Enum EnumPopup(GUIContent p_label, Enum p_value)
         {
@@ -244,7 +249,6 @@ namespace UniversalGUI
                 menu.AddItem(new GUIContent(Enum.GetName(p_value.GetType(), i)), i == index,
                     () =>
                     {
-                        Debug.Log(i+" : "+index);
                         UniGUI.currentShowingPopupIndex = i;
                     });
             }
