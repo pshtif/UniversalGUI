@@ -661,9 +661,11 @@ namespace UniversalGUI
 #if UNITY_EDITOR && USE_EDITORGUI
             return UnityEditor.EditorGUILayout.ObjectField(p_value, p_type, p_sceneObject, p_options);
 #else
-            List<UnityEngine.Object> objectList = ResourceManager.LoadAll("", p_type);
+            List<UnityEngine.Object> objectList = ResourceManager.LoadAll("Machina", p_type);
             objectList.Insert(0, null);
             var index = objectList.IndexOf(p_value);
+            if (index == -1) index = 0;
+            
             var nameList = objectList.Select(o => o == null ? "none" : o.name).ToArray();
             var newIndex = Popup(GUIContent.none, index, nameList, p_options);
             if (newIndex != index)
