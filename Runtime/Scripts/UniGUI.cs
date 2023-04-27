@@ -11,7 +11,7 @@ namespace UniversalGUI
     {
         public static string VERSION = "0.1.0";
         
-        public static GUISkin Skin => (GUISkin)Resources.Load("RuntimeSkin");
+        public static GUISkin Skin => (GUISkin)Resources.Load("Skins/UniversalSkin");
         
         private static readonly Stack<bool> _changedStack = new Stack<bool>();
         
