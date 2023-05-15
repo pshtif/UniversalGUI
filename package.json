@@ -1,0 +1,21 @@
+{
+  "name": "com.binaryego.universalgui",
+  "displayName": "UniversalGUI",
+  "version": "0.1.0",
+  "unity": "2020.3",
+  "description": "Universal gui is a imgui framework for both editor and runtime usage.",
+  "author": {
+	"name": "Peter @sHTiF Stefcek",
+	"email": "pshtif@gmail.com"
+  },
+  "documentationUrl": "https://github.com/pshtif/UniversalGUI",
+  "changelogUrl": "https://github.com/pshtif/UniversalGUI/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/pshtif/UniversalGUI/blob/main/LICENSE",
+  "keywords": [ 
+	"package",
+	"unity",
+	"gui"
+  ],
+  "dependencies": {
+  }
+}
