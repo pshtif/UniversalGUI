@@ -129,7 +129,7 @@ namespace UniversalGUI
             get {
                 if (_plusStyle == null)
                 {
-                    _plusStyle = new GUIStyle();
+                    _plusStyle = new GUIStyle(UniGUI.Skin.label);
                     _plusStyle.fontStyle = FontStyle.Bold;
                     _plusStyle.normal.textColor = Color.white;
                     _plusStyle.fontSize = 16;
@@ -345,14 +345,14 @@ namespace UniversalGUI
 
                 if (showOnStatus)
                 {
-                    style = new GUIStyle("box");
+                    style = new GUIStyle(UniGUI.Skin.box);
                     style.normal.background = Texture2D.whiteTexture;
                     UnityEngine.GUI.color = node.item.state ? new Color(0, .6f, .8f) : new Color(.2f, .2f, .2f);
                     GUILayout.Box("", style, GUILayout.Width(14), GUILayout.Height(14));
                 }
 
                 UnityEngine.GUI.color = _hoverNode == node ? Color.white : Color.white;
-                GUILayout.Label(node.name);
+                UniGUILayout.Label(node.name, GUILayout.Height(20));
                 
                 GUILayout.EndHorizontal();
                 
@@ -422,22 +422,23 @@ namespace UniversalGUI
                 UnityEngine.GUI.color = _hoverNode == node ? Color.white : Color.gray;
                 GUIStyle style = new GUIStyle();
                 style.normal.background = Texture2D.grayTexture;
-                GUILayout.BeginHorizontal(style);
+                GUILayout.BeginHorizontal(style, GUILayout.Height(21));
 
                 if (showOnStatus)
                 {
-                    style = new GUIStyle("box");
+                    style = new GUIStyle(UniGUI.Skin.box);
                     style.normal.background = Texture2D.whiteTexture;
+                    style.margin = new RectOffset(4, 0, 4, 0);
                     UnityEngine.GUI.color = (node.item != null && node.item.state) ? new Color(0, .6f, .8f, .5f) : new Color(.2f, .2f, .2f, .2f);
-                    GUILayout.Box("", style, GUILayout.Width(14), GUILayout.Height(14));
+                    UniGUILayout.Box("", style, GUILayout.Width(14), GUILayout.Height(14));
                 }
 
                 UnityEngine.GUI.color = _hoverNode == node ? Color.white : Color.white;
-                style = new GUIStyle("label");
+                style = new GUIStyle(UniGUI.Skin.label);
                 style.fontStyle = node.Nodes.Count > 0 ? FontStyle.Bold : FontStyle.Normal;
                 style.margin = new RectOffset(4, 4, 2, 2);
                 style.padding = new RectOffset(2, 2, 1, 1);
-                GUILayout.Label(node.name, style);
+                UniGUILayout.Label(node.name, style);
                 GUILayout.EndHorizontal();
                 
                 var nodeRect = GUILayoutUtility.GetLastRect();

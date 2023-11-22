@@ -13,8 +13,6 @@ namespace UniversalGUI
 {
     public static class UniGUILayout
     {
-        static public GUISkin Skin => (GUISkin)Resources.Load("RuntimeSkin");
-        
         public static int labelWidth = 150;
         public static int fieldWidth = 50;
 
@@ -79,12 +77,17 @@ namespace UniversalGUI
 
         public static void Box(string p_label, params GUILayoutOption[] p_options)
         {
-            GUILayout.Box(p_label, Skin.box, p_options);
+            GUILayout.Box(p_label, UniGUI.Skin.box, p_options);
+        }
+        
+        public static void Box(string p_label, GUIStyle p_style, params GUILayoutOption[] p_options)
+        {
+            GUILayout.Box(p_label, p_style, p_options);
         }
         
         public static bool Button(string p_label, params GUILayoutOption[] p_options)
         {
-            return Button(new GUIContent(p_label), Skin.button, p_options);
+            return Button(new GUIContent(p_label), UniGUI.Skin.button, p_options);
         }
         
         public static bool Button(string p_label, GUIStyle p_style = null, params GUILayoutOption[] p_options)
@@ -94,7 +97,7 @@ namespace UniversalGUI
 
         public static bool Button(GUIContent p_label, GUIStyle p_style = null, params GUILayoutOption[] p_options)
         {
-            var style = p_style == null ? Skin.button : p_style;
+            var style = p_style == null ? UniGUI.Skin.button : p_style;
             if (GUILayout.Button(p_label, style, p_options))
             {
                 GUIUtility.keyboardControl = -1;
@@ -130,11 +133,12 @@ namespace UniversalGUI
             if (thisId == UniGUI.currentShowingPopup && UniGUI.currentShowingPopupIndex >= 0)
             {
                 p_selectedIndex = UniGUI.currentShowingPopupIndex;
+                UniGUI.changed = true;
                 UniGUI.currentShowingPopup = -1;
                 UniGUI.currentShowingPopupIndex = -1;
             }
 
-            var style = Skin.GetStyle("enumpopupfield");
+            var style = UniGUI.Skin.GetStyle("enumpopupfield");
             if (GUILayout.Button(p_items[p_selectedIndex], style))
             {
                 GUIUtility.keyboardControl = -1;
@@ -179,6 +183,11 @@ namespace UniversalGUI
         {
             return EnumPopup(GUIContent.none, p_value);
         }
+
+        public static Enum EnumPopup(string p_label, Enum p_value)
+        {
+            return EnumPopup(new GUIContent(p_label), p_value);
+        }
         
         public static Enum EnumPopup(GUIContent p_label, Enum p_value)
         {
@@ -205,11 +214,12 @@ namespace UniversalGUI
             if (thisId == UniGUI.currentShowingPopup && UniGUI.currentShowingPopupIndex >= 0)
             {
                 p_value = (Enum)Enum.ToObject(p_value.GetType(), UniGUI.currentShowingPopupIndex);
+                UniGUI.changed = true;
                 UniGUI.currentShowingPopup = -1;
                 UniGUI.currentShowingPopupIndex = -1;
             }
 
-            var style = Skin.GetStyle("enumpopupfield");
+            var style = UniGUI.Skin.GetStyle("enumpopupfield");
             if (GUILayout.Button(Enum.GetName(p_value.GetType(), p_value), style))
             {
                 GUIUtility.keyboardControl = -1;
@@ -226,7 +236,7 @@ namespace UniversalGUI
             {
                 GUILayout.EndHorizontal();
             }
-
+            
             return p_value;
 #endif
         }
@@ -240,7 +250,10 @@ namespace UniversalGUI
             foreach (int i in Enum.GetValues(p_value.GetType()))
             {
                 menu.AddItem(new GUIContent(Enum.GetName(p_value.GetType(), i)), i == index,
-                    () => { UniGUI.currentShowingPopupIndex = i; });
+                    () =>
+                    {
+                        UniGUI.currentShowingPopupIndex = i;
+                    });
             }
             
 #if UNITY_EDITOR
@@ -274,15 +287,15 @@ namespace UniversalGUI
                 current.type = EventType.Ignore;
             }
 
-            GUILayout.BeginHorizontal();
+            BeginHorizontal(p_options);
             if (p_label != GUIContent.none)
             {
-                GUILayout.Label(p_label, GUILayout.Width(labelWidth));
+                Label(p_label, GUILayout.Width(labelWidth));
             }
 
-            var boolValue = GUILayout.Toggle((bool) p_value, "", Skin.toggle);
+            var boolValue = GUILayout.Toggle((bool) p_value, "", UniGUI.Skin.toggle);
             
-            GUILayout.EndHorizontal();
+            EndHorizontal();
             
             if (flag1)
                 current.type = type;
@@ -315,7 +328,7 @@ namespace UniversalGUI
         
         public static void Label(GUIContent p_label, GUIStyle p_style = null, params GUILayoutOption[] p_options)
         {
-            var labelStyle = p_style == null ? Skin.label : p_style;
+            var labelStyle = p_style == null ? UniGUI.Skin.label : p_style;
 
             GUILayout.Label(p_label, labelStyle, p_options);
         }
@@ -370,7 +383,7 @@ namespace UniversalGUI
             
             string floatString = current ? UniGUI.currentEditingString : p_value.ToString();
             
-            floatString = GUILayout.TextField(floatString, Skin.textField, p_options);
+            floatString = TextField(floatString, UniGUI.Skin.textField, p_options);
             if (current) UniGUI.currentEditingString = floatString;
 
             if (floatString != "" && floatString != p_value.ToString())
@@ -399,7 +412,7 @@ namespace UniversalGUI
 
         public static string TextField(string p_text, params GUILayoutOption[] p_options)
         {
-            return TextField(p_text, Skin.textField, p_options);
+            return TextField(p_text, UniGUI.Skin.textField, p_options);
         }
         
         public static string TextField(string p_text, GUIStyle p_style, params GUILayoutOption[] p_options)
@@ -411,17 +424,26 @@ namespace UniversalGUI
 
             return newText;
         }
-        
         public static string TextField(string p_label, string p_text, params GUILayoutOption[] p_options)
         {
-            return TextField(p_label, p_text, Skin.textField, p_options);
+            return TextField(p_label, p_text, UniGUI.Skin.textField, p_options);
+        }
+        
+        public static string TextField(GUIContent p_label, string p_text, params GUILayoutOption[] p_options)
+        {
+            return TextField(p_label, p_text, UniGUI.Skin.textField, p_options);
         }
         
         public static string TextField(string p_label, string p_text, GUIStyle p_style, params GUILayoutOption[] p_options)
         {
+            return TextField(new GUIContent(p_label), p_text, UniGUI.Skin.textField, p_options);
+        }
+        
+        public static string TextField(GUIContent p_label, string p_text, GUIStyle p_style, params GUILayoutOption[] p_options)
+        {
             GUILayout.BeginHorizontal();
             
-            GUILayout.Label(p_label, GUILayout.Width(labelWidth));
+            Label(p_label, GUILayout.Width(labelWidth));
 
             var text = TextField(p_text, p_style, p_options);
             
@@ -432,13 +454,13 @@ namespace UniversalGUI
         
         public static string PasswordField(string p_text, params GUILayoutOption[] p_options)
         {
-            return PasswordField(p_text, Skin.textField, p_options);
+            return PasswordField(p_text, UniGUI.Skin.textField, p_options);
         }
         
         public static string PasswordField(string p_text, GUIStyle p_style, params GUILayoutOption[] p_options)
         {
             if (p_style == null)
-                p_style = Skin.textField;
+                p_style = UniGUI.Skin.textField;
             
             var newText = GUILayout.PasswordField(p_text, '*', p_style, p_options);
              
@@ -450,7 +472,7 @@ namespace UniversalGUI
         
         public static string PasswordField(string p_label, string p_text, params GUILayoutOption[] p_options)
         {
-            return PasswordField(p_label, p_text, Skin.textField, p_options);
+            return PasswordField(p_label, p_text, UniGUI.Skin.textField, p_options);
         }
         
         public static string PasswordField(string p_label, string p_text, GUIStyle p_style, params GUILayoutOption[] p_options)
@@ -618,7 +640,7 @@ namespace UniversalGUI
             
             string colorString = current ? UniGUI.currentEditingString : "#"+ColorUtility.ToHtmlStringRGBA(p_value);
 
-            colorString = GUILayout.TextField(colorString, Skin.textField, p_options);
+            colorString = GUILayout.TextField(colorString, UniGUI.Skin.textField, p_options);
             if (current) UniGUI.currentEditingString = colorString;
 
             if (colorString != "" && colorString != ColorUtility.ToHtmlStringRGBA(p_value))
@@ -651,9 +673,11 @@ namespace UniversalGUI
 #if UNITY_EDITOR && USE_EDITORGUI
             return UnityEditor.EditorGUILayout.ObjectField(p_value, p_type, p_sceneObject, p_options);
 #else
-            List<UnityEngine.Object> objectList = ResourceManager.LoadAll("", p_type);
+            List<UnityEngine.Object> objectList = ResourceManager.LoadAll("Machina", p_type);
             objectList.Insert(0, null);
             var index = objectList.IndexOf(p_value);
+            if (index == -1) index = 0;
+            
             var nameList = objectList.Select(o => o == null ? "none" : o.name).ToArray();
             var newIndex = Popup(GUIContent.none, index, nameList, p_options);
             if (newIndex != index)
