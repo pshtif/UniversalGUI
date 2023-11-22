@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace UniversalGUI
 {
-    public static class UniGUIPopup
+    public static class UniGUIPopupManager
     {
         private static List<IPopup> _popups = new List<IPopup>();
         //private static bool _usedMouseEvent = false;
