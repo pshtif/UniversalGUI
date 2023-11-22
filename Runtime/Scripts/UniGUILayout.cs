@@ -192,7 +192,14 @@ namespace UniversalGUI
         public static Enum EnumPopup(GUIContent p_label, Enum p_value)
         {
 #if UNITY_EDITOR && USE_EDITORGUI
-            return UnityEditor.EditorGUILayout.EnumPopup(p_label, p_value);
+            if (p_label == GUIContent.none)
+            {
+                return UnityEditor.EditorGUILayout.EnumPopup(p_value);
+            }
+            else
+            {
+                return UnityEditor.EditorGUILayout.EnumPopup(p_label, p_value);   
+            }
 #else
             if (p_label != GUIContent.none)
             {
@@ -276,7 +283,14 @@ namespace UniversalGUI
         public static bool Toggle(GUIContent p_label, bool p_value, params GUILayoutOption[] p_options)
         {
 #if UNITY_EDITOR && USE_EDITORGUI
-            return UnityEditor.EditorGUILayout.Toggle(p_label, p_value, p_options);
+            var oldLabelWidth = UnityEditor.EditorGUIUtility.labelWidth; 
+            UnityEditor.EditorGUIUtility.labelWidth = labelWidth;
+            //return GUILayout.Toggle(p_value, p_label);
+            bool result = p_label == GUIContent.none
+                ? UnityEditor.EditorGUILayout.Toggle(p_value, p_options)
+                : UnityEditor.EditorGUILayout.Toggle(p_label, p_value, p_options);
+            UnityEditor.EditorGUIUtility.labelWidth = oldLabelWidth;
+            return result;
 #else
             int thisId = GUIUtility.GetControlID("Toggle".GetHashCode(), FocusType.Keyboard);
             Event current = Event.current;
@@ -518,34 +532,11 @@ namespace UniversalGUI
 
         public static Vector3 Vector3Field(string p_label, Vector3 p_value, params GUILayoutOption[] p_options)
         {
-            return Vector3Field(new GUIContent(p_label), p_value, p_options);
+            return Vector3Field(new GUIContent(p_label), p_value, 0, p_options);
         }
-        
-        public static Vector3 Vector3Field(GUIContent p_label, Vector3 p_value, params GUILayoutOption[] p_options)
-        {
-#if UNITY_EDITOR && USE_EDITORGUI
-            return UnityEditor.EditorGUILayout.Vector3Field(p_label, p_value, p_options);
-#else
-            GUILayout.BeginHorizontal(p_options);
-            if (!p_label.text.IsNullOrWhitespace())
-            {
-                GUILayout.Label(p_label, GUILayout.Width(labelWidth));
-            }
-            
-            var oldLabelWidth = labelWidth;
-            labelWidth = 11;
-            var valueX = FloatField("X", p_value.x, GUILayout.ExpandWidth(true));
-            var valueY = FloatField("Y", p_value.y, GUILayout.ExpandWidth(true));
-            var valueZ = FloatField("Z", p_value.z, GUILayout.ExpandWidth(true));
-            p_value = new Vector3(valueX, valueY, valueZ);
-            labelWidth = oldLabelWidth;
-            GUILayout.EndHorizontal();
-            return p_value;
-#endif
-        }
-        
+
         // This is a hack to send max width directly instead of evaluating GUILayout options using reflection due to its type being internal to Unity
-        public static Vector3 Vector3Field(GUIContent p_label, Vector3 p_value, float p_maxWidth, params GUILayoutOption[] p_options)
+        public static Vector3 Vector3Field(GUIContent p_label, Vector3 p_value, float p_fieldWidth, params GUILayoutOption[] p_options)
         {
 #if UNITY_EDITOR && USE_EDITORGUI
             return UnityEditor.EditorGUILayout.Vector3Field(p_label, p_value, p_options);
@@ -560,13 +551,13 @@ namespace UniversalGUI
             labelWidth = 11;
             float valueX, valueY, valueZ;
             
-            if (p_maxWidth > 0)
+            if (p_fieldWidth > 0)
             {
-                valueX = FloatField("X", p_value.x, GUILayout.MaxWidth((p_maxWidth - 45) / 3),
+                valueX = FloatField("X", p_value.x, GUILayout.MaxWidth((p_fieldWidth - 45) / 3),
                     GUILayout.ExpandWidth(true));
-                valueY = FloatField("Y", p_value.y, GUILayout.MaxWidth((p_maxWidth - 45) / 3),
+                valueY = FloatField("Y", p_value.y, GUILayout.MaxWidth((p_fieldWidth - 45) / 3),
                     GUILayout.ExpandWidth(true));
-                valueZ = FloatField("Z", p_value.z, GUILayout.MaxWidth((p_maxWidth - 45) / 3),
+                valueZ = FloatField("Z", p_value.z, GUILayout.MaxWidth((p_fieldWidth - 45) / 3),
                     GUILayout.ExpandWidth(true));
             }
             else
