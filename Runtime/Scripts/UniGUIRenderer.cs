@@ -25,7 +25,8 @@ namespace UniversalGUI
             UnityEngine.GUI.skin = UniversalGUI.UniGUI.Skin;
 
             var rect = GetRect();
-            UniGUIPopup.HandleMouseBlocking(rect);
+            UniGUIPopupManager.HandleMouseBlocking(rect);
+            UniGUIWindowManager.HandleMouseBlocking(rect);
             
             if (drawBackground)
             {
@@ -37,7 +38,8 @@ namespace UniversalGUI
             OnGUIInternal(rect);            
             
             GUILayout.EndArea();
-            UniGUIPopup.OnGUI(rect);
+            UniGUIWindowManager.OnGUI(rect);
+            UniGUIPopupManager.OnGUI(rect);
         }
 
         protected abstract void OnGUIInternal(Rect p_rect);
