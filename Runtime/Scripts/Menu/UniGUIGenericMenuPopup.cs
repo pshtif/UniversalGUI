@@ -187,7 +187,7 @@ namespace UniversalGUI
             PopupWindow.Show(new Rect(p_x, p_y, 0, 0), this);
             #else
             _rect = new Rect(p_x, p_y, width, height);
-            UniversalGUIPopup.Show(this);
+            UniGUIPopup.Show(this);
             #endif
         }
         
@@ -197,7 +197,7 @@ namespace UniversalGUI
             PopupWindow.Show(new Rect(p_position.x, p_position.y, 0, 0), this);
             #else
             _rect = new Rect(p_position.x, p_position.y, width, height);
-            UniversalGUIPopup.Show(this);
+            UniGUIPopup.Show(this);
             #endif
         }
 
@@ -525,7 +525,7 @@ namespace UniversalGUI
             #if UNITY_EDITOR
             base.editorWindow.Close();
             #else
-            UniversalGUIPopup.Close(this);
+            UniGUIPopup.Close(this);
             #endif
         }
         
