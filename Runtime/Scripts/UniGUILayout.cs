@@ -395,12 +395,12 @@ namespace UniversalGUI
             
             bool current = UniGUI.currentId == thisId;
             
-            string floatString = current ? UniGUI.currentEditingString : p_value.ToString();
+            string floatString = current ? UniGUI.currentEditingString : p_value.ToString("#");
             
             floatString = TextField(floatString, UniGUI.Skin.textField, p_options);
             if (current) UniGUI.currentEditingString = floatString;
 
-            if (floatString != "" && floatString != p_value.ToString())
+            if (floatString != "" && floatString != p_value.ToString("#"))
             {
                 float newValue;
                 if (float.TryParse(floatString, NumberStyles.Float, CultureInfo.InvariantCulture, out newValue) && p_value != newValue)
